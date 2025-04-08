@@ -1,0 +1,204 @@
+MEDO Hub Script for Roblox with Auto Features
+
+-- Create the ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MEDO Hub"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Create a frame for the main hub
+local hubFrame = Instance.new("Frame")
+hubFrame.Size = UDim2.new(0, 400, 0, 300)
+hubFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+hubFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+hubFrame.Parent = screenGui
+
+-- Create the title for the hub
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0, 50)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.Text = "MEDO Hub"
+titleLabel.TextSize = 24
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+titleLabel.Parent = hubFrame
+
+-- Create buttons for each section
+local sections = {"Main", "Automatically", "Settings", "Misc"}
+local buttons = {}
+
+for i, section in ipairs(sections) do
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0, 200, 0, 50)
+    button.Position = UDim2.new(0, 100, 0, 50 + (i - 1) * 60)
+    button.Text = section
+    button.TextSize = 20
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    button.Parent = hubFrame
+
+    -- Store button references
+    table.insert(buttons, button)
+
+    -- Handle button clicks
+    button.MouseButton1Click:Connect(function()
+        -- For now, just print the section clicked
+        print(section .. " button clicked.")
+    end)
+end
+
+-- Create a function to toggle visibility of the hub
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0, 200, 0, 50)
+toggleButton.Position = UDim2.new(0, 100, 0, 250)
+toggleButton.Text = "Toggle Hub"
+toggleButton.TextSize = 20
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+toggleButton.Parent = hubFrame
+
+toggleButton.MouseButton1Click:Connect(function()
+    hubFrame.Visible = not hubFrame.Visible
+end)
+
+-- Main Section Buttons for Auto Fishing
+local autoFishButton = Instance.new("TextButton")
+autoFishButton.Size = UDim2.new(0, 200, 0, 50)
+autoFishButton.Position = UDim2.new(0, 100, 0, 100)
+autoFishButton.Text = "Auto Fish: OFF"
+autoFishButton.TextSize = 20
+autoFishButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoFishButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+autoFishButton.Parent = hubFrame
+
+local autoReelButton = Instance.new("TextButton")
+autoReelButton.Size = UDim2.new(0, 200, 0, 50)
+autoReelButton.Position = UDim2.new(0, 100, 0, 160)
+autoReelButton.Text = "Auto Reel: OFF"
+autoReelButton.TextSize = 20
+autoReelButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoReelButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+autoReelButton.Parent = hubFrame
+
+local autoCastButton = Instance.new("TextButton")
+autoCastButton.Size = UDim2.new(0, 200, 0, 50)
+autoCastButton.Position = UDim2.new(0, 100, 0, 220)
+autoCastButton.Text = "Auto Cast: OFF"
+autoCastButton.TextSize = 20
+autoCastButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoCastButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+autoCastButton.Parent = hubFrame
+
+local autoShakeButton = Instance.new("TextButton")
+autoShakeButton.Size = UDim2.new(0, 200, 0, 50)
+autoShakeButton.Position = UDim2.new(0, 100, 0, 280)
+autoShakeButton.Text = "Auto Shake: OFF"
+autoShakeButton.TextSize = 20
+autoShakeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoShakeButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+autoShakeButton.Parent = hubFrame
+
+-- Automatically Section Buttons for Auto Sell Fish and Auto Put Bait
+local autoSellFishButton = Instance.new("TextButton")
+autoSellFishButton.Size = UDim2.new(0, 200, 0, 50)
+autoSellFishButton.Position = UDim2.new(0, 100, 0, 340)
+autoSellFishButton.Text = "Auto Sell Fish: OFF"
+autoSellFishButton.TextSize = 20
+autoSellFishButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoSellFishButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+autoSellFishButton.Parent = hubFrame
+
+local autoPutBaitButton = Instance.new("TextButton")
+autoPutBaitButton.Size = UDim2.new(0, 200, 0, 50)
+autoPutBaitButton.Position = UDim2.new(0, 100, 0, 400)
+autoPutBaitButton.Text = "Auto Put Bait: OFF"
+autoPutBaitButton.TextSize = 20
+autoPutBaitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+autoPutBaitButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+autoPutBaitButton.Parent = hubFrame
+
+-- Create functions to toggle each auto feature
+
+local autoFishingEnabled = false
+local autoReelingEnabled = false
+local autoCastingEnabled = false
+local autoShakingEnabled = false
+local autoSellFishEnabled = false
+local autoPutBaitEnabled = false
+
+-- Auto Fish Toggle
+autoFishButton.MouseButton1Click:Connect(function()
+    autoFishingEnabled = not autoFishingEnabled
+    autoFishButton.Text = "Auto Fish: " .. (autoFishingEnabled and "ON" or "OFF")
+    if autoFishingEnabled then
+        print("Auto Fishing Started")
+        -- Add actual auto fishing code here
+    else
+        print("Auto Fishing Stopped")
+        -- Stop auto fishing logic
+    end
+end)
+
+-- Auto Reel Toggle
+autoReelButton.MouseButton1Click:Connect(function()
+    autoReelingEnabled = not autoReelingEnabled
+    autoReelButton.Text = "Auto Reel: " .. (autoReelingEnabled and "ON" or "OFF")
+    if autoReelingEnabled then
+        print("Auto Reeling Started")
+        -- Add actual auto reeling code here
+    else
+        print("Auto Reeling Stopped")
+        -- Stop auto reeling logic
+    end
+end)
+
+-- Auto Cast Toggle
+autoCastButton.MouseButton1Click:Connect(function()
+    autoCastingEnabled = not autoCastingEnabled
+    autoCastButton.Text = "Auto Cast: " .. (autoCastingEnabled and "ON" or "OFF")
+    if autoCastingEnabled then
+        print("Auto Casting Started")
+        -- Add actual auto casting code here
+    else
+        print("Auto Casting Stopped")
+        -- Stop auto casting logic
+    end
+end)
+
+-- Auto Shake Toggle
+autoShakeButton.MouseButton1Click:Connect(function()
+    autoShakingEnabled = not autoShakingEnabled
+    autoShakeButton.Text = "Auto Shake: " .. (autoShakingEnabled and "ON" or "OFF")
+    if autoShakingEnabled then
+        print("Auto Shaking Started")
+        -- Add actual auto shaking code here
+    else
+        print("Auto Shaking Stopped")
+        -- Stop auto shaking logic
+    end
+end)
+
+-- Automatically Section: Auto Sell Fish Toggle
+autoSellFishButton.MouseButton1Click:Connect(function()
+    autoSellFishEnabled = not autoSellFishEnabled
+    autoSellFishButton.Text = "Auto Sell Fish: " .. (autoSellFishEnabled and "ON" or "OFF")
+    if autoSellFishEnabled then
+        print("Auto Sell Fish Started")
+        -- Add actual auto sell fish code here
+    else
+        print("Auto Sell Fish Stopped")
+        -- Stop auto selling fish logic
+    end
+end)
+
+-- Automatically Section: Auto Put Bait Toggle
+autoPutBaitButton.MouseButton1Click:Connect(function()
+    autoPutBaitEnabled = not autoPutBaitEnabled
+    autoPutBaitButton.Text = "Auto Put Bait: " .. (autoPutBaitEnabled and "ON" or "OFF")
+    if autoPutBaitEnabled then
+        print("Auto Put Bait Started")
+        -- Add actual auto put bait code here
+    else
+        print("Auto Put Bait Stopped")
+        -- Stop auto putting bait logic
+    end
+end)
